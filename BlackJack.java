@@ -37,14 +37,65 @@ public class BlackJack
     }
     public void blackJack()
     {
+        botnumbers = "X ";
+        generatenum();
+        while(!finished)
+        {
+            generatebotnum();
+            generatenum();
+        }
+    }
+    public void generatebotnum()
+    {
         int rand = (int)(Math.random()*13)+1;
         if(rand == 1)
         {
+            botnumbers += "A ";
         }
-        while(!finished)
+        else if(rand == 11)
         {
-
+            botnumbers += "J ";
         }
+        else if(rand == 12)
+        {
+            botnumbers += "Q ";
+        }
+        else if(rand == 13)
+        {
+            botnumbers += "K ";
+        }
+        else
+        {
+            botnumbers += rand + " ";
+        }
+        botsum += rand;
+
+    }
+    public void generatenum()
+    {
+        int rand = (int)(Math.random()*13)+1;
+        if(rand == 1)
+        {
+            numbers += "A ";
+        }
+        else if(rand == 11)
+        {
+            numbers += "J ";
+        }
+        else if(rand == 12)
+        {
+            numbers += "Q ";
+        }
+        else if(rand == 13)
+        {
+            numbers += "K ";
+        }
+        else
+        {
+            numbers += rand + " ";
+        }
+        sum += rand;
+
     }
 
 }
