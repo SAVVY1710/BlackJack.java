@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class BlackJack
 {
+    //field variables
     int botsum;
     int sum;
     String numbers;
@@ -16,16 +17,28 @@ public class BlackJack
     int rand;
     boolean finished;
     Scanner scan;
+    int betplace;
+    String username;
+    // Constructor where I initialize variables
     public BlackJack()
     {
+        betplace = 0;
+        sum = 0;
+        botsum = 0;
+        rand = 0;
+        finished = false;
         numbers = "";
-        botnumbers = "";
+        botnumbers = "X ";
         scan = new Scanner(System.in);
+        username = "";
     }
+    //In the main I create an instance of this class and run runIt
     public static void main(String[] args) {
         BlackJack bj = new BlackJack();
         bj.runIt();
     }
+    
+    //Class called on by the main which runs the program
     public void runIt()
     {
         System.out.print("Would you like to play Blackjack? Yes(1) or No(2): ");
@@ -34,10 +47,32 @@ public class BlackJack
         {
             blackJack();
         }
+        
     }
+    public void existingAccountMeth()
+    {
+        System.out.print("Please enter your username: ");
+
+    }
+    public void createNewAccountMeth()
+    {
+
+    }
+    //where i put most of the logic
     public void blackJack()
     {
-        botnumbers = "X ";
+        /* 
+        System.out.print("Do you already have an account? Yes(1) or No(2)");
+        int choice = scan.nextInt();
+        if (choice == 1) 
+        {
+            existingAccountMeth();
+        }
+        else if (choice == 2)
+        {
+            createNewAccountMeth();
+        }
+        */
         generatenum();
         while(!finished)
         {
@@ -62,6 +97,7 @@ public class BlackJack
             }
         }
     }
+    //generates a number for the bot
     public void generatebotnum()
     {
         int rand = (int)(Math.random()*13)+1;
@@ -88,6 +124,7 @@ public class BlackJack
         botsum += rand;
 
     }
+    //generates a number for the player.
     public void generatenum()
     {
         int rand = (int)(Math.random()*13)+1;
@@ -131,17 +168,36 @@ public class BlackJack
         System.out.println();
         if(sum == 21 && !(botsum == 21))
         {
-           System.out.println("Good Job you Won!"); 
+           System.out.println("Congratulations! You Won!"); 
         }
 
-        if(sum == 21 && (botsum == 21))
+        else if(sum == 21 && (botsum == 21))
         {
            System.out.println("Its a Tie!");
         }
 
-        if (sum > 21)
+        else if (sum > 21)
         {
             System.out.println("You Lose!");
+        }
+
+        else if (botsum > 21 && sum > 21) 
+        {
+            System.out.println("You Lose!");
+        }
+
+        else if (botsum > 21 && sum <= 21) 
+        {
+            System.out.println("Congratulations! You Won!"); 
+        }
+        else if (21-sum > 21-botsum)
+        {
+            System.out.println("You Lose!");
+        }
+
+        else if(21-botsum > 21-sum)
+        {
+            System.out.println("Congratulations! You Won!"); 
         }
 
     }
