@@ -28,7 +28,7 @@ public class BlackJack
     }
     public void runIt()
     {
-        System.out.println("Would you like to play Blackjack?(yes, no)(1,2)");
+        System.out.print("Would you like to play Blackjack? Yes(1) or No(2): ");
         int choice = scan.nextInt();
         if (choice == 1) 
         {
@@ -43,6 +43,23 @@ public class BlackJack
         {
             generatebotnum();
             generatenum();
+
+            if(!finished)
+            {
+                System.out.println("Here are the dealers cards: " + botnumbers);
+                System.out.print("Here are your cards: " + numbers);
+                System.out.println("= " + sum);
+
+                System.out.println();
+
+                System.out.print("Would you like to hit(1), or stand(2): ");
+                int num = scan.nextInt();
+                if(num == 2)
+                {
+                    finished = true;
+                    finishmeth();
+                }
+            }
         }
     }
     public void generatebotnum()
@@ -74,6 +91,7 @@ public class BlackJack
     public void generatenum()
     {
         int rand = (int)(Math.random()*13)+1;
+        sum += rand;
         if(rand == 1)
         {
             numbers += "A ";
@@ -94,7 +112,37 @@ public class BlackJack
         {
             numbers += rand + " ";
         }
-        sum += rand;
+
+        if(sum > 21)
+        {
+            finishmeth();
+            finished = true;
+        }
+
+    }
+    public void finishmeth()
+    {
+        generatebotnum();
+        botnumbers = botnumbers.substring(2,botnumbers.length());
+        System.out.print("Here are the dealers cards: " + botnumbers);
+        System.out.println("= " + botsum);
+        System.out.print("Here are your cards: " + numbers);
+        System.out.println("= " + sum);
+        System.out.println();
+        if(sum == 21 && !(botsum == 21))
+        {
+           System.out.println("Good Job you Won!"); 
+        }
+
+        if(sum == 21 && (botsum == 21))
+        {
+           System.out.println("Its a Tie!");
+        }
+
+        if (sum > 21)
+        {
+            System.out.println("You Lose!");
+        }
 
     }
 
