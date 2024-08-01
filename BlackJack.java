@@ -5,6 +5,11 @@
  * @purpose: Game of Blackjack
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class BlackJack
@@ -19,6 +24,9 @@ public class BlackJack
     Scanner scan;
     int betplace;
     String username;
+    Scanner input;
+    PrintWriter pw;
+    String password;
     // Constructor where I initialize variables
     public BlackJack()
     {
@@ -31,6 +39,7 @@ public class BlackJack
         botnumbers = "X ";
         scan = new Scanner(System.in);
         username = "";
+        password = "";
     }
     //In the main I create an instance of this class and run runIt
     public static void main(String[] args) {
@@ -45,34 +54,35 @@ public class BlackJack
         int choice = scan.nextInt();
         if (choice == 1) 
         {
-            blackJack();
+            System.out.print("Do you already have an account? Yes(1) or No(2): ");
+            choice = scan.nextInt();
+            if (choice == 1) 
+            {
+                existingAccountMeth();
+            }   
+            else if (choice == 2)
+            {
+                createNewAccountMeth();
+            }
         }
         
     }
     public void existingAccountMeth()
     {
-        System.out.print("Please enter your username: ");
-
+        System.out.print("Please enter your username(Less than 9 characters): ");
+        username = scan.next();
+        blackJack();
     }
     public void createNewAccountMeth()
     {
+        System.out.print("Please enter a username(Less than 9 characters): ");
+        username = scan.next();
 
+        blackJack();
     }
     //where i put most of the logic
     public void blackJack()
     {
-        /* 
-        System.out.print("Do you already have an account? Yes(1) or No(2)");
-        int choice = scan.nextInt();
-        if (choice == 1) 
-        {
-            existingAccountMeth();
-        }
-        else if (choice == 2)
-        {
-            createNewAccountMeth();
-        }
-        */
         generatenum();
         while(!finished)
         {
@@ -97,6 +107,7 @@ public class BlackJack
             }
         }
     }
+
     //generates a number for the bot
     public void generatebotnum()
     {
@@ -200,6 +211,38 @@ public class BlackJack
             System.out.println("Congratulations! You Won!"); 
         }
 
+    }
+    public void tryCatchIt()
+    {
+        File inFile = new File ("Logindata.txt");
+        String inFileName = "Logindata.txt";
+        //value = "";
+        input = null;
+        try
+        {
+            input = new Scanner ( inFile );
+        }
+        catch ( FileNotFoundException e )
+        {
+            System.err.println("Cannot find " + inFileName + " file.");
+            System.exit(1);
+        }
+    }
+    public void append(String wd)
+    {
+        pw = null;
+        File outFile = new File("Logindata.txt");
+        try
+        {
+            pw = new PrintWriter( new FileWriter(outFile, true) );
+        }
+        catch (IOException e)
+        {
+            System.err.println("Cannot append to " +  " Logindata.txt");
+            System.exit(1);
+        }
+        pw.println(wd);
+        pw.close();
     }
 
 }
