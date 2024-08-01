@@ -29,6 +29,7 @@ public class BlackJack
     String password;
     int numofcoins;
     String[] allStrings;
+    int replaceline;
     // Constructor where I initialize variables
     public BlackJack()
     {
@@ -101,6 +102,9 @@ public class BlackJack
             }
         }
 
+        allStrings = new String[counter+1];
+
+
         System.out.print("Enter a password: ");
         password = scan.next();
 
@@ -108,6 +112,12 @@ public class BlackJack
         String stringotappend = username + " " + password + " " + numofcoins;
         append(stringotappend);
         
+        while(input.hasNextLine())
+        {
+            counter ++;
+            allStrings[counter] = input.nextLine(); 
+        }
+        replaceline = counter;
         blackJack();
     }
     //where I put most of the logic
@@ -214,56 +224,78 @@ public class BlackJack
         {
            System.out.println("Congratulations! You Won!");
            numofcoins += betplace;
-           System.out.println("You now have " + numofcoins + "tokens");
+           System.out.println("You now have " + numofcoins + " tokens");
         }
 
         else if(sum == 21 && (botsum == 21))
         {
            System.out.println("Its a Tie!");
-           System.out.println("You now have " + numofcoins + "tokens");
+           System.out.println("You now have " + numofcoins + " tokens");
         }
 
         else if (sum > 21)
         {
             System.out.println("You Lose!");
             numofcoins -= betplace;
-            System.out.println("You now have " + numofcoins + "tokens");
+            System.out.println("You now have " + numofcoins + " tokens");
         }
 
         else if (botsum > 21 && sum > 21) 
         {
             System.out.println("You Lose!");
             numofcoins -= betplace;
-            System.out.println("You now have " + numofcoins + "tokens");
+            System.out.println("You now have " + numofcoins + " tokens");
         }
 
         else if (botsum > 21 && sum <= 21) 
         {
             System.out.println("Congratulations! You Won!");
             numofcoins += betplace;
-            System.out.println("You now have " + numofcoins + "tokens");
+            System.out.println("You now have " + numofcoins + " tokens");
         }
         else if (21-sum > 21-botsum)
         {
             System.out.println("You Lose!");
             numofcoins -= betplace;
-            System.out.println("You now have " + numofcoins + "tokens");
+            System.out.println("You now have " + numofcoins + " tokens");
         }
 
         else if(21-botsum > 21-sum)
         {
             System.out.println("Congratulations! You Won!");
             numofcoins += betplace;
-            System.out.println("You now have " + numofcoins + "tokens");
+            System.out.println("You now have " + numofcoins + " tokens");
+        }
+        int counter;
+        counter = 0;
+        tryCatchIt();
+        while(input.hasNextLine())
+        {
+            allStrings[counter] = input.nextLine();
+            counter ++;
         }
 
-        String stringotappend = username + " " + password + " " + numofcoins;
-        append(stringotappend);
+        for(int i = 0; i < allStrings.length; i++)
+        {
+            if (i == 0)
+            {
+                write(allStrings[i]);
+            }
+            else if (i == replaceline) 
+            {
+                String stringotappend = username + " " + password + " " + numofcoins;
+                append(stringotappend);
+            }
+            else 
+            {
+                append(allStrings[i]);
+            }
+        }
 
-        System.out.println("Would you like to play again(yes, no): ");
+        System.out.print("Would you like to play again(yes, no): ");
         String choice = scan.next();
 
-        if(choice.equals("yes"))
+        if(choice.equals("yes" || choice.equals("1")))
         {
             betplace = 0;
             sum = 0;
@@ -272,9 +304,7 @@ public class BlackJack
             finished = false;
             numbers = "";
             botnumbers = "X ";
-            scan = new Scanner(System.in);
-            username = "";
-            password = "";
+            blackJack();
         }
     }
     public void tryCatchIt()
@@ -300,6 +330,22 @@ public class BlackJack
         try
         {
             pw = new PrintWriter( new FileWriter(outFile, true) );
+        }
+        catch (IOException e)
+        {
+            System.err.println("Cannot append to " +  " Logindata.txt");
+            System.exit(1);
+        }
+        pw.println(wd);
+        pw.close();
+    }
+    public void write(String wd)
+    {
+        pw = null;
+        File outFile = new File("Logindata.txt");
+        try
+        {
+            pw = new PrintWriter( new FileWriter(outFile, false) );
         }
         catch (IOException e)
         {
