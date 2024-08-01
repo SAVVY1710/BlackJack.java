@@ -27,9 +27,12 @@ public class BlackJack
     Scanner input;
     PrintWriter pw;
     String password;
+    int numofcoins;
+    String[] allStrings;
     // Constructor where I initialize variables
     public BlackJack()
     {
+
         betplace = 0;
         sum = 0;
         botsum = 0;
@@ -75,14 +78,43 @@ public class BlackJack
     }
     public void createNewAccountMeth()
     {
-        System.out.print("Please enter a username(Less than 9 characters): ");
+        System.out.print("Please enter a username(Less than 20 characters): ");
         username = scan.next();
+        while(username.length() > 20)
+        {
+            System.out.println("That was more than 20 characters");
+            System.out.print("Please enter a username(Less than 20 characters): ");
+            username = scan.next();
+        }
+        String temp;
+        int counter = 0;
+        tryCatchIt();
+        while(input.hasNextLine())
+        {
+            temp = input.nextLine();
+            counter++;
+            while(temp.substring(0, temp.indexOf(' ')).equals(username) && !temp.equals(""))
+            {
+                System.out.println("This username has already been taken, choose another username please.");
+                System.out.print("Please enter a username(Less than 20 characters): ");
+                username = scan.next();
+            }
+        }
 
+        System.out.print("Enter a password: ");
+        password = scan.next();
+
+        numofcoins = 200;
+        String stringotappend = username + " " + password + " " + numofcoins;
+        append(stringotappend);
+        
         blackJack();
     }
-    //where i put most of the logic
+    //where I put most of the logic
     public void blackJack()
     {
+        System.out.print("You have " + numofcoins + " tokens. How many would you like to bet? (Enter a number): ");
+        betplace = scan.nextInt();
         generatenum();
         while(!finished)
         {
@@ -135,6 +167,7 @@ public class BlackJack
         botsum += rand;
 
     }
+
     //generates a number for the player.
     public void generatenum()
     {
@@ -166,8 +199,8 @@ public class BlackJack
             finishmeth();
             finished = true;
         }
-
     }
+
     public void finishmeth()
     {
         generatebotnum();
@@ -179,38 +212,70 @@ public class BlackJack
         System.out.println();
         if(sum == 21 && !(botsum == 21))
         {
-           System.out.println("Congratulations! You Won!"); 
+           System.out.println("Congratulations! You Won!");
+           numofcoins += betplace;
+           System.out.println("You now have " + numofcoins + "tokens");
         }
 
         else if(sum == 21 && (botsum == 21))
         {
            System.out.println("Its a Tie!");
+           System.out.println("You now have " + numofcoins + "tokens");
         }
 
         else if (sum > 21)
         {
             System.out.println("You Lose!");
+            numofcoins -= betplace;
+            System.out.println("You now have " + numofcoins + "tokens");
         }
 
         else if (botsum > 21 && sum > 21) 
         {
             System.out.println("You Lose!");
+            numofcoins -= betplace;
+            System.out.println("You now have " + numofcoins + "tokens");
         }
 
         else if (botsum > 21 && sum <= 21) 
         {
-            System.out.println("Congratulations! You Won!"); 
+            System.out.println("Congratulations! You Won!");
+            numofcoins += betplace;
+            System.out.println("You now have " + numofcoins + "tokens");
         }
         else if (21-sum > 21-botsum)
         {
             System.out.println("You Lose!");
+            numofcoins -= betplace;
+            System.out.println("You now have " + numofcoins + "tokens");
         }
 
         else if(21-botsum > 21-sum)
         {
-            System.out.println("Congratulations! You Won!"); 
+            System.out.println("Congratulations! You Won!");
+            numofcoins += betplace;
+            System.out.println("You now have " + numofcoins + "tokens");
         }
 
+        String stringotappend = username + " " + password + " " + numofcoins;
+        append(stringotappend);
+
+        System.out.println("Would you like to play again(yes, no): ");
+        String choice = scan.next();
+
+        if(choice.equals("yes"))
+        {
+            betplace = 0;
+            sum = 0;
+            botsum = 0;
+            rand = 0;
+            finished = false;
+            numbers = "";
+            botnumbers = "X ";
+            scan = new Scanner(System.in);
+            username = "";
+            password = "";
+        }
     }
     public void tryCatchIt()
     {
