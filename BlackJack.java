@@ -75,6 +75,50 @@ public class BlackJack
     {
         System.out.print("Please enter your username(Less than 9 characters): ");
         username = scan.next();
+
+        int counter = 0;
+        String temp = "";
+
+        tryCatchIt();
+        while(input.hasNext())
+        {
+            counter ++;
+        }
+
+        allStrings = new String[counter+1];
+
+        boolean bool = false;
+        tryCatchIt();
+        while(input.hasNext())
+        {
+            temp = input.next();
+            allStrings[counter] = temp;
+            counter ++;
+            if(temp.substring(0, temp.indexOf(' ')).equals(username)&& temp.contains(" "))
+            {
+                bool = true;
+            }
+        }
+
+        while(!bool)
+        {
+            System.out.print("Please enter your username(Less than 9 characters): ");
+            username = scan.next();
+            tryCatchIt();
+            while(input.hasNext())
+            {
+                temp = input.next();
+                allStrings[counter] = temp;
+                counter ++;
+                if(temp.substring(0, temp.indexOf(' ')).equals(username)&& temp.contains(" "))
+                {
+                    bool = true;
+                }
+            }
+        }
+
+
+
         blackJack();
     }
     public void createNewAccountMeth()
@@ -94,7 +138,7 @@ public class BlackJack
         {
             temp = input.nextLine();
             counter++;
-            while(temp.substring(0, temp.indexOf(' ')).equals(username) && !temp.equals(""))
+            while(temp.substring(0, temp.indexOf(' ')).equals(username) && temp.trim().length() != 1)
             {
                 System.out.println("This username has already been taken, choose another username please.");
                 System.out.print("Please enter a username(Less than 20 characters): ");
@@ -103,7 +147,6 @@ public class BlackJack
         }
 
         allStrings = new String[counter+1];
-
 
         System.out.print("Enter a password: ");
         password = scan.next();
@@ -295,7 +338,7 @@ public class BlackJack
         System.out.print("Would you like to play again(yes, no): ");
         String choice = scan.next();
 
-        if(choice.equals("yes" || choice.equals("1")))
+        if(choice.equals("yes"))
         {
             betplace = 0;
             sum = 0;

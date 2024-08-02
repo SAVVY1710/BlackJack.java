@@ -1,3 +1,2 @@
 i m
-savula city 250
-savulacity imdagoat 100
+savula tistheday 100000
