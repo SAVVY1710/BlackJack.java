@@ -71,89 +71,72 @@ public class BlackJack
         }
         
     }
-    public void existingAccountMeth()
-    {
-        System.out.print("Please enter your username(Less than 9 characters): ");
+    public void existingAccountMeth() {
+        System.out.print("Please enter your username (Less than 9 characters): ");
         username = scan.next();
 
-        int counter = 0;
-        String temp = "";
+        boolean userFound = false;
+        String userRecord = "";
 
-        tryCatchIt();
-        while(input.hasNext())
-        {
-            counter ++;
-        }
+        try {
+            input = new Scanner(new File("Logindata.txt")); // Adjust the file name accordingly
 
-        allStrings = new String[counter+1];
+            while (input.hasNextLine()) {
+                String temp = input.nextLine();
+                String tempUsername = temp.substring(0, temp.indexOf(' '));
 
-        boolean bool = false;
-        tryCatchIt();
-        while(input.hasNext())
-        {
-            temp = input.next();
-            allStrings[counter] = temp;
-            counter ++;
-            if(temp.substring(0, temp.indexOf(' ')).equals(username)&& temp.contains(" "))
-            {
-                bool = true;
-            }
-        }
-
-        String tocheck = "";
-        while(!bool)
-        {
-            System.out.print("Please enter your username(Less than 9 characters): ");
-            username = scan.next();
-            tryCatchIt();
-            while(input.hasNext())
-            {
-                temp = input.next();
-                allStrings[counter] = temp;
-                counter ++;
-                if(temp.substring(0, temp.indexOf(' ')).equals(username)&& temp.contains(" "))
-                {
-                    tocheck = temp;
-                    bool = true;
+                if (tempUsername.equals(username)) {
+                    userRecord = temp;
+                    userFound = true;
+                    break;
                 }
             }
-        }
+            input.close();
 
-        System.out.print("Enter your password: ");
-        password = scan.next();
+            if (!userFound) {
+                while (!userFound) {
+                    System.out.println("That username was not found.");
+                    System.out.print("Please enter your username (Less than 9 characters): ");
+                    username = scan.next();
 
-        tryCatchIt();
-        String tocheck1;
-        bool = false;
-        tocheck1 = tocheck.trim().substring(0, tocheck.lastIndexOf(' '));
-        tocheck = tocheck + " ";
-        if (tocheck.substring(tocheck.indexOf(' '), tocheck.lastIndexOf(' ')).trim().equals(password))
-        {
-            bool = true;
-        }
-        else 
-        {
-            bool = false;
-        }
+                    input = new Scanner(new File("yourFileName.txt")); // Reopen the file to search again
+                    while (input.hasNextLine()) {
+                        String temp = input.nextLine();
+                        String tempUsername = temp.substring(0, temp.indexOf(' '));
 
-        while(!bool)
-        {
-            System.out.println("That password was incorrect. Please try again: ");
-            password = scan.next();
-
-            if (tocheck.substring(tocheck.indexOf(' '), tocheck.lastIndexOf(' ')).trim().equals(password))
-            {
-                bool = true;
+                        if (tempUsername.equals(username)) {
+                            userRecord = temp;
+                            userFound = true;
+                            break;
+                        }
+                    }
+                    input.close();
+                }
             }
-            else 
-            {
-                bool = false;
-            }
-        }
 
-        numofcoins = Integer.parseInt(tocheck.trim().substring(tocheck.lastIndexOf(' '), tocheck.length()));
-        
-        blackJack();
+            // Check password
+            boolean passwordCorrect = false;
+            while (!passwordCorrect) {
+                System.out.print("Enter your password: ");
+                password = scan.next();
+
+                String storedPassword = userRecord.substring(userRecord.indexOf(' ') + 1, userRecord.lastIndexOf(' '));
+
+                if (storedPassword.equals(password)) {
+                    passwordCorrect = true;
+                } else {
+                    System.out.println("That password was incorrect. Please try again.");
+                }
+            }
+
+            // Retrieve number of coins
+            numofcoins = Integer.parseInt(userRecord.substring(userRecord.lastIndexOf(' ') + 1).trim());
+
+            blackJack(); // Call your method
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        }
     }
     public void createNewAccountMeth()
     {
@@ -436,5 +419,4 @@ public class BlackJack
         pw.println(wd);
         pw.close();
     }
-
 }
