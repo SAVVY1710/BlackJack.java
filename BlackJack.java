@@ -100,6 +100,7 @@ public class BlackJack
             }
         }
 
+        String tocheck = "";
         while(!bool)
         {
             System.out.print("Please enter your username(Less than 9 characters): ");
@@ -112,13 +113,46 @@ public class BlackJack
                 counter ++;
                 if(temp.substring(0, temp.indexOf(' ')).equals(username)&& temp.contains(" "))
                 {
+                    tocheck = temp;
                     bool = true;
                 }
             }
         }
 
+        System.out.print("Enter your password: ");
+        password = scan.next();
 
+        tryCatchIt();
+        String tocheck1;
+        bool = false;
+        tocheck1 = tocheck.trim().substring(0, tocheck.lastIndexOf(' '));
+        tocheck = tocheck + " ";
+        if (tocheck.substring(tocheck.indexOf(' '), tocheck.lastIndexOf(' ')).trim().equals(password))
+        {
+            bool = true;
+        }
+        else 
+        {
+            bool = false;
+        }
 
+        while(!bool)
+        {
+            System.out.println("That password was incorrect. Please try again: ");
+            password = scan.next();
+
+            if (tocheck.substring(tocheck.indexOf(' '), tocheck.lastIndexOf(' ')).trim().equals(password))
+            {
+                bool = true;
+            }
+            else 
+            {
+                bool = false;
+            }
+        }
+
+        numofcoins = Integer.parseInt(tocheck.trim().substring(tocheck.lastIndexOf(' '), tocheck.length()));
+        
         blackJack();
     }
     public void createNewAccountMeth()
@@ -348,6 +382,10 @@ public class BlackJack
             numbers = "";
             botnumbers = "X ";
             blackJack();
+        }
+        else
+        {
+            input.close();
         }
     }
     public void tryCatchIt()
